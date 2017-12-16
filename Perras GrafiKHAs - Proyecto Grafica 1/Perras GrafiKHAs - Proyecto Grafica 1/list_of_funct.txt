@@ -1,0 +1,20 @@
+*Dibujo
+	-DDA
+	-Bresenham
+	-Circunferencia
+	-Elipse
+	-Poligono Regular
+	-Poligono Irregular
+*Relleno
+	-Circunferencia$
+	-Elipse$
+	-Poligono Regular
+	-Poligono Irregular
+*Rotacion
+*Trazlacion
+*Escalamiento
+*Recorte_
+
++
+Convex Hull , Curva Cerrada para Poligono Irregular
+
