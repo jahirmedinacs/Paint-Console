@@ -157,9 +157,7 @@ string pairToString(pair<double,double> data)
     output += DoubleToString(data.first);    
     output += "\n";
     output += DoubleToString(data.second);
-    output += "\n)\n";    
-    output += "\n";
-
+    output += "\n)\n";
     return output;
 }
 
@@ -198,9 +196,19 @@ string colorToString(color data)
 string boolToString(bool data)
 {
     if(data)
-        return "bool\n1";
+        return "bool1";
     else
-        return "bool\n0";
+        return "bool0";
+}
+
+bool stringToBool(string data)
+{
+    if(data == "bool1")
+        return true;
+    else if(data == "bool0")
+        return false;
+    else
+        return NULL;
 }
 
 void save(stateContainer lastState)
@@ -252,33 +260,225 @@ void save(stateContainer lastState)
     save.close(); 
 }
 
-/*
+
 stateContainer load(string fileDirecton)
 {   
     stateContainer lastStateLoaded;
 
     objectDrawn auxiliar;
 
+    pair<double,double> pairNull;
+    vector< pair<double,double> > coordinatesNull;
+    double doubleNull;
+    color colorNull;
+
+    vector< pair<double,double> > coordinates;
+    pair<double,double> inputPoint ,center ,Point_o ,Point_f,dataEscalate,dataPivot,dataTranslate;
+    double radius,radius_1,radius_2,angle;
+    int sides,num;
+    double inputCarry[5];
+    bool fill;
+    color boundarieColor;
+    color fillColor;
+
     ifstream load;
     load.open(fileDirecton);
 
     bool objectDrawnOn,line,elipse,polygon;
-    bool color,vector,
+    bool in_vector = false, in_pair = false;
 
     string carryString;
+    int objectTypeChoseer;
+    int lineWrapper;
+
     while(!load.eof())
     {
-        load>> carryString;
+        load>>carryString;
 
         if(carryString == "$")
         {
-
+            objectDrawnOn  = true;
         }
-        el
+        else if(carryString == "&")
+        {   
+            objectDrawnOn == false;
+            cout<<"\n-Objeto Leido-\n";
+        }
+        else
+        {
+            if(objectDrawnOn)
+            {   
+                if(carryString == "1")
+                {   
+                    lineWrapper = 0;                   
+
+                    line  = true;
+                    elipse = false;
+                    polygon = false;
+                }
+                else if(carryString == "2")
+                {   
+                    lineWrapper = 0;
+                    line  = false;
+                    elipse = true;
+                    polygon = false;
+                }
+                else if(carryString == "3")
+                {   
+                    lineWrapper = 1;
+                    line  = false;
+                    elipse = false;
+                    polygon = true;
+                }
+                else
+                {   
+                    if(line)
+                    {   
+                        if(lineWrapper == 1)
+                            Point_o.first = StringToDouble(carryString);
+                        if(lineWrapper == 2)
+                            Point_o.second = StringToDouble(carryString);
+                        
+                        if(lineWrapper == 5)
+                            Point_f.first = StringToDouble(carryString);
+                        if(lineWrapper == 6)
+                            Point_f.second = StringToDouble(carryString);
+                        
+                        if(lineWrapper == 9)
+                            boundarieColor.red = StringToDouble(carryString);
+                        if(lineWrapper == 10)
+                            boundarieColor.green = StringToDouble(carryString);
+                        if(lineWrapper == 11)
+                            boundarieColor.blue = StringToDouble(carryString);
+
+                        lineWrapper ++;
+                        cout<<carryString<<endl;
+                        if(carryString == "0")
+                        {
+                            auxiliar = objectDrawnConstructor(1,Point_o,Point_f,pairNull,doubleNull,doubleNull,coordinatesNull,false,boundarieColor,colorNull);
+                            lastStateLoaded.PB(auxiliar);
+                        }
+                    }
+                    else if(elipse)
+                    {   
+                        if(lineWrapper == 1)
+                            center.first = StringToDouble(carryString);
+                        if(lineWrapper == 2)
+                            center.second = StringToDouble(carryString);
+                        
+                        if(lineWrapper == 4)
+                            radius_1 = StringToDouble(carryString);
+                        if(lineWrapper == 5)
+                            radius_2 = StringToDouble(carryString);
+                        
+                        if(lineWrapper == 6)
+                            fill = stringToBool(carryString);
+
+                        if(lineWrapper == 8)
+                            boundarieColor.red = StringToDouble(carryString);
+                        if(lineWrapper == 9)
+                            boundarieColor.green = StringToDouble(carryString);
+                        if(lineWrapper == 10)
+                            boundarieColor.blue = StringToDouble(carryString);
+                        
+                        if(lineWrapper == 13)
+                            fillColor.red = StringToDouble(carryString);
+                        if(lineWrapper == 14)
+                            fillColor.green = StringToDouble(carryString);
+                        if(lineWrapper == 15)
+                            fillColor.blue = StringToDouble(carryString);
+
+                        lineWrapper ++;
+
+                        if(carryString == "0")
+                        {
+                            auxiliar = objectDrawnConstructor(2,pairNull,pairNull,center,radius_1,radius_2,coordinatesNull,fill,boundarieColor,fillColor);
+                            lastStateLoaded.PB(auxiliar);
+                        }
+                    }
+                    else if(polygon)
+                    {   
+                        if(carryString == "!")
+                        {
+                            in_vector = true;
+                        }
+                        else if(carryString == "?")
+                        {
+                            in_vector = false;
+                            lineWrapper = 0;
+                        }
+
+                        if(in_vector)
+                        {
+                            if(carryString == "(")
+                            {
+                                in_pair = true;
+                                lineWrapper = 0;
+                            }
+                            else if(carryString == ")")
+                            {    
+                                in_pair = false;
+                            }
+
+                            if(lineWrapper == 1)
+                            {
+                                inputPoint.first = StringToDouble(carryString);
+                            }
+                            if(lineWrapper == 2)
+                            {
+                                inputPoint.second = StringToDouble(carryString);
+                                coordinates.PB(inputPoint);
+                            }
+                            lineWrapper++;
+                        }
+                        else
+                        {   
+                            if(lineWrapper == 1)
+                                fill = stringToBool(carryString);
+
+                            if(lineWrapper == 3)
+                                boundarieColor.red = StringToDouble(carryString);
+                            if(lineWrapper == 4)
+                                boundarieColor.green = StringToDouble(carryString);
+                            if(lineWrapper == 5)
+                                boundarieColor.blue = StringToDouble(carryString);
+                            
+                            if(lineWrapper == 8)
+                                fillColor.red = StringToDouble(carryString);
+                            if(lineWrapper == 9)
+                                fillColor.green = StringToDouble(carryString);
+                            if(lineWrapper == 10)
+                                fillColor.blue = StringToDouble(carryString);
+                            
+                            lineWrapper ++;
+                        } 
+
+                        if(carryString == "0")
+                        {
+                        auxiliar = objectDrawnConstructor(3,pairNull,pairNull,pairNull,doubleNull,doubleNull,coordinates,fill,boundarieColor,fillColor);
+                        lastStateLoaded.PB(auxiliar);
+                        }
+                    }
+                    else
+                    {
+                        if(carryString.substr(0,3) == "\@!")
+                            cout<<carryString.substr(2);
+                        else
+                            cout<<"Linea Omitida";
+                    }
+                }
+            }
+            else
+            {
+                cout<<"\nLinea Omitida";
+            }
+        }
     }
 
+    return lastStateLoaded;
+
 }
-*/
+
 
 void objectDrawnList(stateContainer actualState)
 {
@@ -329,7 +529,8 @@ stateContainer operationalMenu(stateContainer actualState)
     cout<<"[3]Dibuja Poligono"<<endl;
     cout<<"[4]Modificar Elemento"<<endl;
     cout<<"[5]Guardar"<<endl;
-    cout<<"[6]Salir"<<endl;
+    cout<<"[6]Cargar"<<endl;
+    cout<<"[7]Salir"<<endl;
     cin>>option;
 
     if(option==1)
@@ -525,10 +726,8 @@ stateContainer operationalMenu(stateContainer actualState)
         cout<<"[1]Escalamiento"<<endl;
         cout<<"[2]Rotar"<<endl;
         cout<<"[3]Trazladar"<<endl;
-//
         cout<<"[4]Eliminar"<<endl;
         cin>>option;
-//
         objectDrawn auxiliar = actualState[index];
 
         if(option == 1)
@@ -633,25 +832,40 @@ stateContainer operationalMenu(stateContainer actualState)
         }
         else if(option == 4)
         {
-            string option;
+            string agree;
             cout<<"\nConfirmar\t";
-            cout<<"\n[Y] -  [N]\t"; cin>>option;
+            cout<<"\n[Y] -  [N]\t"; cin>>agree;
 
-            if(option == "Y")
+            if(agree == "Y" or agree == "y")
             {
-                actualState = actualState.erase(index);
+                actualState.erase(actualState.begin() + index);
                 return actualState;
             }
             else
             {
                 return actualState;
             }
+        }
+        else
+            return actualState;
     }
     else if(option == 5)
     {
         save(actualState);
+        cout<<"Guardado"<<endl;
         return actualState;
+    }
+    else if(option == 6)
+    {   
+        actualState = load("save.tpg");
+        cout<<"Cargado"<<endl;
+        return actualState;
+    }
+    else if(option == 7)
+    {
+        exit(1);
     }
     else
         return actualState;
+
 }
