@@ -559,7 +559,7 @@ void polygonPlot(vector< pair<double,double> > coordinates , bool paint,  color 
             auxiliarYCordinates.insert(i);
         }
 
-        for(int i=0; i<vertexContainer.size(); i++)
+        for(int i=0; i<(int)vertexContainer.size(); i++)
         {
             glColor3f(colorDataBoundaries.red,colorDataBoundaries.green,colorDataBoundaries.blue);
             glBegin(GL_LINES);
@@ -570,7 +570,7 @@ void polygonPlot(vector< pair<double,double> > coordinates , bool paint,  color 
 
         double xi, yi, xf, yf, auxX, auxY;
 
-        for(int i=0; i<vertexContainer.size(); i++)
+        for(int i=0; i<(int)vertexContainer.size(); i++)
         {
             xi = vertexContainer[i].xI;
             yi = vertexContainer[i].yI;
