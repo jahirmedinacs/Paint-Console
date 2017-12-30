@@ -559,7 +559,7 @@ void polygonPlot(vector< pair<double,double> > coordinates , bool paint,  color 
             auxiliarYCordinates.insert(i);
         }
 
-        for(int i=0; i<vertexContainer.size(); i++)
+        for(int i=0; i<(int)vertexContainer.size(); i++)
         {
             glColor3f(colorDataBoundaries.red,colorDataBoundaries.green,colorDataBoundaries.blue);
             glBegin(GL_LINES);
@@ -570,7 +570,7 @@ void polygonPlot(vector< pair<double,double> > coordinates , bool paint,  color 
 
         double xi, yi, xf, yf, auxX, auxY;
 
-        for(int i=0; i<vertexContainer.size(); i++)
+        for(int i=0; i<(int)vertexContainer.size(); i++)
         {
             xi = vertexContainer[i].xI;
             yi = vertexContainer[i].yI;
@@ -643,4 +643,34 @@ void polygonPlot(vector< pair<double,double> > coordinates , bool paint,  color 
         }
     }
 } 
+
+void razonT(int opc)   
+{
+    switch (opc)
+    {
+        case 1:
+            for(float i=-20; i<20; i+=0.1){
+                glBegin(GL_POINTS);
+                    glVertex2f(i, sin(i));
+                glEnd();
+            }
+            break;
+        case 2:
+            for(float i=-20; i<20; i+=0.1){
+                glBegin(GL_POINTS);
+                    glVertex2f(i, cos(i));
+                glEnd();
+            }
+            break;
+        case 3:
+            for(float i=-20; i<20; i+=0.1){
+                glBegin(GL_POINTS);
+                    glVertex2f(i, tan(i));
+                glEnd();
+            }
+            break;
+    }
+    glFlush();
+}
+
 #endif // PROYECTLIBRARIE_H_INCLUDED

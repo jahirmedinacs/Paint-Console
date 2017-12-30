@@ -282,7 +282,7 @@ stateContainer load(string fileDirecton)
     color fillColor;
 
     ifstream load;
-    load.open(fileDirecton);
+    load.open(fileDirecton.c_str());
 
     bool objectDrawnOn,line,elipse,polygon;
     bool in_vector = false, in_pair = false;
@@ -503,8 +503,9 @@ void objectDrawnList(stateContainer actualState)
     }
 }
 
+vector< pair<double,double> > arrPuntos;
 stateContainer operationalMenu(stateContainer actualState)
-{   
+{
     objectDrawn auxiliarObjectDrawn;
 
     pair<double,double> pairNull;
@@ -530,20 +531,24 @@ stateContainer operationalMenu(stateContainer actualState)
     cout<<"[4]Modificar Elemento"<<endl;
     cout<<"[5]Guardar"<<endl;
     cout<<"[6]Cargar"<<endl;
-    cout<<"[7]Salir"<<endl;
+    cout<<"[7]Razones Trigonometricas"<<endl;
+    cout<<"[8]Recorte"<<endl;
+    cout<<"[9]Salir"<<endl;
     cin>>option;
 
     if(option==1)
-    {       
+    {
             cout<<"\nLinea\n";
             cout<<"Primer Punto"<<endl;
             cout<<"\n X:\t"; cin>>Point_o.first;
             cout<<"\n Y:\t"; cin>>Point_o.second;
 
+            arrPuntos.PB( Point_o);
             cout<<"Segundo Punto"<<endl;
             cout<<"\n X:\t"; cin>>Point_f.first;
             cout<<"\n Y:\t"; cin>>Point_f.second;
 
+            arrPuntos.PB( Point_f);
             cout<<"\nColor De Linea\t";
 
             cout<<"\nRojo\t"; cin>>boundarieColor.red;
@@ -557,32 +562,32 @@ stateContainer operationalMenu(stateContainer actualState)
             return actualState;
     }
     else if(option==2)
-    {   
+    {
         cout<<"\nElipse[1] Circunferencia[2]\n";
-        cin>>internalChooser;   
+        cin>>internalChooser;
 
         cout<<"\nCentro X\t"; cin>>center.first;
         cout<<"\nCentro Y\t"; cin>>center.second;
 
         if(internalChooser == 1)
-        {   
+        {
             cout<<"\nElipse\n";
             cout<<"\nRadio1\t"; cin>>radius_1;
             cout<<"\nRadio2\t"; cin>>radius_2;
         }
         else if(internalChooser == 2)
-        {   
+        {
             cout<<"\nCircunferencia\n";
             cout<<"\nRadio\t"; cin>>radius_1;
             radius_2 = radius_1;
         }
         else
-            return actualState;  
+            return actualState;
 
         cout<<"\nRellenar? [1] Si [0] No\t"; cin>>fill;
 
         if(fill == true)
-        {   
+        {
             cout<<"\nColor Borde\n";
             cout<<"\nRojo\t"; cin>>boundarieColor.red;
             cout<<"\nVerde\t"; cin>>boundarieColor.green;
@@ -599,9 +604,9 @@ stateContainer operationalMenu(stateContainer actualState)
             cout<<"\nRojo\t"; cin>>boundarieColor.red;
             cout<<"\nVerde\t"; cin>>boundarieColor.green;
             cout<<"\nAzul\t"; cin>>boundarieColor.blue;
-        }            
+        }
         else
-            return actualState;  
+            return actualState;
 
             auxiliarObjectDrawn = objectDrawnConstructor(2,pairNull,pairNull,center,radius_1,radius_2,coordinatesNull,fill,boundarieColor,fillColor);
 
@@ -611,11 +616,11 @@ stateContainer operationalMenu(stateContainer actualState)
 
     }
     else if(option==3)
-        {       
+        {
             cout<<"\nPoligono Regular[1] Poligono Cualquiera[2]\n";
             cin>>internalChooser;
             if(internalChooser == 1)
-            {   
+            {
                 cout<<"\nPoligono Regular\n";
                 cout<<"\nCentro X\t"; cin>>center.first;
                 cout<<"\nCentro Y\t"; cin>>center.second;
@@ -629,7 +634,7 @@ stateContainer operationalMenu(stateContainer actualState)
                 coordinates = regularPolygonGenerator(sides,center,radius);
 
                 if(fill == true)
-                {   
+                {
                     cout<<"\nColor Borde\n";
                     cout<<"\nRojo\t"; cin>>boundarieColor.red;
                     cout<<"\nVerde\t"; cin>>boundarieColor.green;
@@ -646,9 +651,9 @@ stateContainer operationalMenu(stateContainer actualState)
                     cout<<"\nRojo\t"; cin>>boundarieColor.red;
                     cout<<"\nVerde\t"; cin>>boundarieColor.green;
                     cout<<"\nAzul\t"; cin>>boundarieColor.blue;
-                }            
+                }
                 else
-                    return actualState;  
+                    return actualState;
 
                 auxiliarObjectDrawn = objectDrawnConstructor(3,pairNull,pairNull,pairNull,doubleNull,doubleNull,coordinates,fill,boundarieColor,fillColor);
 
@@ -667,7 +672,7 @@ stateContainer operationalMenu(stateContainer actualState)
                     cout<<"\nRellenar? [1] Si [0] No\t"; cin>>fill;
 
                     if(fill == true)
-                    {   
+                    {
                         cout<<"\nColor Borde\n";
                         cout<<"\nRojo\t"; cin>>boundarieColor.red;
                         cout<<"\nVerde\t"; cin>>boundarieColor.green;
@@ -686,14 +691,14 @@ stateContainer operationalMenu(stateContainer actualState)
                         cout<<"\nAzul\t"; cin>>boundarieColor.blue;
                     }
                     else
-                        return actualState;  
-    
+                        return actualState;
+
                     auxiliarObjectDrawn = objectDrawnConstructor(3,pairNull,pairNull,pairNull,doubleNull,doubleNull,coordinates,fill,boundarieColor,fillColor);
 
                     actualState.PB(auxiliarObjectDrawn);
 
                     return actualState;
-                }   
+                }
                 else if( internalChooser == 2)
                 {
                     coordinates = manualPolygonInput();
@@ -709,7 +714,7 @@ stateContainer operationalMenu(stateContainer actualState)
                     return actualState;
                 }
                 else
-                    return actualState;  
+                    return actualState;
 
             }
 
@@ -718,7 +723,7 @@ stateContainer operationalMenu(stateContainer actualState)
     else if(option==4)
     {
         int index;
-        
+
         objectDrawnList(actualState);
 
         cout<<"\nFIGURA DE INDICE?:\t"; cin>>index;
@@ -731,13 +736,13 @@ stateContainer operationalMenu(stateContainer actualState)
         objectDrawn auxiliar = actualState[index];
 
         if(option == 1)
-        {   
+        {
             cout<<"\nFactor de Escalamiento\t";
             cout<<"\nX\t"; cin>>dataEscalate.first;
             cout<<"\nY\t"; cin>>dataEscalate.second;
 
             if(auxiliar.objectType == 1)
-            {   
+            {
                 auxiliar.startPointLine = escalationPoint(auxiliar.startPointLine,dataEscalate);
                 auxiliar.endPointLine = escalationPoint(auxiliar.endPointLine,dataEscalate);
 
@@ -756,12 +761,12 @@ stateContainer operationalMenu(stateContainer actualState)
             else if(auxiliar.objectType == 3)
             {
                 auxiliar.coordinates = escalationVector(auxiliar.coordinates,dataEscalate);
-                
+
                 actualState[index] = auxiliar;
                 return actualState;
             }
             else
-                return actualState;  
+                return actualState;
         }
         else if(option == 2)
         {
@@ -772,7 +777,7 @@ stateContainer operationalMenu(stateContainer actualState)
             cin>>angle;
 
             if(auxiliar.objectType == 1)
-            {   
+            {
                 auxiliar.startPointLine = rotatePoint(auxiliar.startPointLine,dataPivot,angle);
                 auxiliar.endPointLine = rotatePoint(auxiliar.endPointLine,dataPivot,angle);
 
@@ -790,13 +795,13 @@ stateContainer operationalMenu(stateContainer actualState)
             else if(auxiliar.objectType == 3)
             {
                 auxiliar.coordinates = rotateVector(auxiliar.coordinates,dataPivot,angle);
-                
+
                 actualState[index] = auxiliar;
                 return actualState;
             }
             else
-                return actualState;  
-            
+                return actualState;
+
         }
         else if(option == 3)
         {
@@ -805,7 +810,7 @@ stateContainer operationalMenu(stateContainer actualState)
             cout<<"\nY\t"; cin>>dataTranslate.second;
 
             if(auxiliar.objectType == 1)
-            {   
+            {
                 auxiliar.startPointLine = translationPoint(auxiliar.startPointLine,dataTranslate);
                 auxiliar.endPointLine = translationPoint(auxiliar.endPointLine,dataTranslate);
 
@@ -823,12 +828,12 @@ stateContainer operationalMenu(stateContainer actualState)
             else if(auxiliar.objectType == 3)
             {
                 auxiliar.coordinates = translationVector(auxiliar.coordinates,dataTranslate);
-                
+
                 actualState[index] = auxiliar;
                 return actualState;
             }
             else
-                return actualState;   
+                return actualState;
         }
         else if(option == 4)
         {
@@ -856,16 +861,40 @@ stateContainer operationalMenu(stateContainer actualState)
         return actualState;
     }
     else if(option == 6)
-    {   
+    {
         actualState = load("save.tpg");
         cout<<"Cargado"<<endl;
         return actualState;
     }
     else if(option == 7)
     {
-        exit(1);
+        cout<<"1. SENO"<<endl;
+        cout<<"2. COSENO"<<endl;
+        cout<<"3. TAGENTE"<<endl;
+        int opc;
+        cin>>opc;
+        razonT(opc);
     }
-    else
+    else if(option == 8)
+    {
+        cout<<"Recorte de Lineas"<<endl;
+        int Xmin,Xmax,Ymin,Ymax;
+        cout<<"Ingrese el punto X minimo "<<endl;
+        cin>>Xmin;
+        cout<<"Ingrese el punto X maximo"<<endl;
+        cin>>Xmax;
+        cout<<"Ingrese el punto Y minimo"<<endl;
+        cin>>Ymin;
+        cout<<"Ingrese el Punto Y maximo"<<endl;
+        cin>>Ymax;
+        recorte(arrPuntos,Xmin,Xmax,Ymin,Ymax);
+    }
+    else if(option == 9)
+    {
+        exit(1);
+    }else
         return actualState;
+
+}
 
 }
