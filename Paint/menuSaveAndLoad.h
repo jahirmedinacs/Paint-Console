@@ -530,7 +530,8 @@ stateContainer operationalMenu(stateContainer actualState)
     cout<<"[4]Modificar Elemento"<<endl;
     cout<<"[5]Guardar"<<endl;
     cout<<"[6]Cargar"<<endl;
-    cout<<"[7]Salir"<<endl;
+    cout<<"[7]Razones Trigonometricas"<<endl;
+    cout<<"[8]Salir"<<endl;
     cin>>option;
 
     if(option==1)
@@ -863,9 +864,17 @@ stateContainer operationalMenu(stateContainer actualState)
     }
     else if(option == 7)
     {
-        exit(1);
+        cout<<"1. SENO"<<endl;
+        cout<<"2. COSENO"<<endl;
+        cout<<"3. TAGENTE"<<endl;
+        int opc;
+        cin>>opc;
+        razonT(opc);
     }
-    else
+    else if(option == 8)
+    {
+        exit(1);
+    }else
         return actualState;
 
 }
