@@ -896,5 +896,3 @@ stateContainer operationalMenu(stateContainer actualState)
         return actualState;
 
 }
-
-}
